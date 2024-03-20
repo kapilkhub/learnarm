@@ -1,0 +1,53 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "allowedValues": [
+                "westeurope",
+                "northeurope",
+                "europe"
+            ],
+            "defaultValue":"westeurope",
+            "metadata": {
+                "description": "Enter RG location"
+            }
+        },
+        "resourceGroupName": {
+            "type": "string",
+            "metadata": {
+                "description": "Enter RG Name"
+            },
+            "defaultValue":"rgGithubAction"
+        },
+        "resourceGroupEnvironmentTag": {
+            "type": "string",
+            "allowedValues":[
+                "development",
+                "staging",
+                "production",
+                "testing"
+            ],
+            "defaultValue": "development",
+            "metadata": {
+                "description": "Enter RG Environment Tag"
+            }
+        }
+    },
+    "functions": [],
+    "variables": {},
+    "resources": [
+        {
+            "name": "[parameters('resourceGroupName')]",
+            "type": "Microsoft.Resources/resourceGroups",
+            "apiVersion": "2022-09-01",
+            "location": "[parameters('location')]",
+            "dependsOn": [],
+            "tags": {
+                "environment":"[parameters('resourceGroupEnvironmentTag')]"
+            }
+        }
+    ],
+    "outputs": {}
+}
