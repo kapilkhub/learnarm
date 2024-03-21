@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "storageAccountName": {
-            "value": "ghstorageaccount" 
+            "value": "kap001storageacc" 
         },
         "skuType": {
             "value": "Standard_LRS" 
