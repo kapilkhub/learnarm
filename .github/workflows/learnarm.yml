@@ -14,6 +14,8 @@ jobs:
       environment: ${{vars.environment}}
       region: ${{vars.region}}
       resourceGroupName: rgGithubAction-staging
+    environment: 
+      name: staging
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -53,6 +55,8 @@ jobs:
       environment: ${{vars.environment}}
       region: ${{vars.region}}
       resourceGroupName: rgGithubAction-prod
+    environment: 
+      name: production
     needs: armDeployStaging
     runs-on: ubuntu-latest
     steps:
