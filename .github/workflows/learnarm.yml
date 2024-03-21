@@ -37,6 +37,7 @@ jobs:
             resourceGroupEnvironmentTag=${{env.environment}}
             resourceGroupName=${{env.resourceGroupName}}
           region: ${{env.region}}
+          deploymentName: ${{env.resourceGroupName}}
 
       - name: Deploy Storage Account
         uses: Azure/arm-deploy@v2
@@ -79,6 +80,7 @@ jobs:
             resourceGroupEnvironmentTag=${{env.environment}}
             resourceGroupName=${{env.resourceGroupName}}
           region: ${{env.region}}
+          deploymentName: ${{env.resourceGroupName}}
 
       - name: Deploy Storage Account
         uses: Azure/arm-deploy@v2
