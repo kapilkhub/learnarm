@@ -49,5 +49,10 @@
             }
         }
     ],
-    "outputs": {}
+    "outputs": {
+        "resourceGroupName": {
+            "type": "string",
+            "value": "[parameters('resourceGroupName')]"
+        }
+    }
 }

@@ -17,8 +17,21 @@ jobs:
         with:
           creds: ${{secrets.AZURE_CREDENTIALS}}
 
-      - name: Deploy resource group with AZ CLI
-        uses: Azure/cli@v2.0.0
+      - name: Deploy Resource Group
+        id: deployResurceGroup
+        uses: Azure/arm-deploy@v2
         with:
-          inlineScript: |
-            az deployment sub create --location "westeurope" --template-file ./arm/resourcegroup.json
+          scope: subscription
+          template: ./arm/resourcegroup.json
+          subscriptionId: 3e4e586a-a0ff-49db-bb07-e8cb8fa5601a
+          parameters: ./arm/resourcegroup.parameters.json
+
+      - name: Deploy Storage Account
+        uses: Azure/arm-deploy@v2
+        with:
+          scope: resourcegroup
+          template: ./arm/storageaccount.json
+          parameters: ./arm/storageaccount.parameter.json
+          subscriptionId: 3e4e586a-a0ff-49db-bb07-e8cb8fa5601a
+          resourceGroupName: ${{steps.deployResurceGroup.outputs.resourceGroupName}}
+          
