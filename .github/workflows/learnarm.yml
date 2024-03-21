@@ -6,11 +6,14 @@ on:
     branches: 
       - main
   workflow_dispatch:
-env:
-  region: westeurope
-  environment: development
+
 jobs:
-  armDeploy:
+  armDeployStaging:
+    name: Deploy To Staging
+    env:
+      environment: ${{vars.environment}}
+      region: ${{vars.region}}
+      resourceGroupName: rgGithubAction-staging
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -30,6 +33,7 @@ jobs:
           parameters: 
             ./arm/resourcegroup.parameters.json
             resourceGroupEnvironmentTag=${{env.environment}}
+            resourceGroupName=${{env.resourceGroupName}}
           region: ${{env.region}}
 
       - name: Deploy Storage Account
@@ -40,6 +44,47 @@ jobs:
           parameters: 
             ./arm/storageaccount.parameters.json
             environment=${{env.environment}}
+            storageAccountName=kap001storageacc
+          subscriptionId: ${{secrets.SUBSCRIPTION_ID}}
+          resourceGroupName: ${{steps.deployResurceGroup.outputs.resourceGroupName}}
+  armDeployProduction:
+    name: Deploy To Production
+    env:
+      environment: ${{vars.environment}}
+      region: ${{vars.region}}
+      resourceGroupName: rgGithubAction-prod
+    needs: armDeployStaging
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{secrets.AZURE_CREDENTIALS}}
+
+      - name: Deploy Resource Group
+        id: deployResurceGroup
+        uses: Azure/arm-deploy@v2
+        with:
+          scope: subscription
+          template: ./arm/resourcegroup.json
+          subscriptionId:  ${{secrets.SUBSCRIPTION_ID}}
+          parameters: 
+            ./arm/resourcegroup.parameters.json
+            resourceGroupEnvironmentTag=${{env.environment}}
+            resourceGroupName=${{env.resourceGroupName}}
+          region: ${{env.region}}
+
+      - name: Deploy Storage Account
+        uses: Azure/arm-deploy@v2
+        with:
+          scope: resourcegroup
+          template: ./arm/storageaccount.json
+          parameters: 
+            ./arm/storageaccount.parameters.json
+            environment=${{env.environment}}
+            storageAccountName=kap002storageacc
           subscriptionId: ${{secrets.SUBSCRIPTION_ID}}
           resourceGroupName: ${{steps.deployResurceGroup.outputs.resourceGroupName}}
           
