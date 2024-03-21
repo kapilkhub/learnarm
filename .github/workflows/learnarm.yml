@@ -32,7 +32,7 @@ jobs:
         with:
           scope: resourcegroup
           template: ./arm/storageaccount.json
-          parameters: ./arm/storageaccount.parameter.json
+          parameters: ./arm/storageaccount.parameters.json
           subscriptionId: 3e4e586a-a0ff-49db-bb07-e8cb8fa5601a
           resourceGroupName: ${{steps.deployResurceGroup.outputs.resourceGroupName}}
           
