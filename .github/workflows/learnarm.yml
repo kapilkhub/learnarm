@@ -25,6 +25,7 @@ jobs:
           template: ./arm/resourcegroup.json
           subscriptionId: 3e4e586a-a0ff-49db-bb07-e8cb8fa5601a
           parameters: ./arm/resourcegroup.parameters.json
+          region: westeurope
 
       - name: Deploy Storage Account
         uses: Azure/arm-deploy@v2
